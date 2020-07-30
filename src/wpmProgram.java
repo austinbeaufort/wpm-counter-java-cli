@@ -1,3 +1,4 @@
+import java.time.LocalTime;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
@@ -8,16 +9,40 @@ public class wpmProgram {
 		printCountdown();
 		printStringToType();
 		
-		Scanner scan = new Scanner(System.in);
-		String typedWords = scan.nextLine();
+		double start = LocalTime.now().toNanoOfDay();
+		String typedWords = getTypedWords();
+		double end = LocalTime.now().toNanoOfDay();
 		
-		System.out.println(typedWords);
+		double secondsElapsed = getSecondsElapsed(start, end);
 		
-		scan.close();
+		int wpm = calculateWPM(secondsElapsed, typedWords);
+		
+		System.out.println("Your typing speed: " + wpm + " wpm!");
+		
 	}
 	
 	
 	
+	public static double getSecondsElapsed(double start, double end) {
+		double elapsedTime = end - start;
+		double seconds = elapsedTime / 1000000000.0;
+		return seconds;
+	}
+	
+	
+	public static int calculateWPM(double seconds, String typedWords) {
+		int numChars = typedWords.length();
+		int wpm = (int) (((double) numChars / 5) / seconds * 60);
+		return wpm;
+	}
+	
+	
+	public static String getTypedWords() {
+		Scanner scan = new Scanner(System.in);
+		String typedWords = scan.nextLine();
+		scan.close();
+		return typedWords;
+	}
 	
 
 	
